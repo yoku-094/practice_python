@@ -13,4 +13,13 @@ urlpatterns = [
 
     # 編集
     path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
+
+    # 草稿一覧
+    path('drafts/', views.post_draft_list, name='post_draft_list'),
+
+    # 記事掲載
+    path('post/<pk>/publish/', views.post_publish, name='post_publish'),
+
+    # 記事削除
+    path('post/<pk>/remove/', views.post_remove, name='post_remove'),
 ]

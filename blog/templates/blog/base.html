@@ -18,10 +18,15 @@
   </head>
   <body>
     <div class="page-header">
-      {% if user.is_authenticated %}
-      <a href="{% url 'post_new' %}" class="top-menu"
-        ><span class="glyphicon glyphicon-plus"></span
-      ></a>
+      {# 管理者ログイン済の時のみ表示 #} {% if user.is_authenticated %}
+      <!-- 記事追加アイコン -->
+      <a href="{% url 'post_new' %}" class="top-menu">
+        <span class="glyphicon glyphicon-plus"></span>
+      </a>
+      <!-- 草稿記事一覧 -->
+      <a href="{% url 'post_draft_list' %}" class="top-menu">
+        <span class="glyphicon glyphicon-edit"></span>
+      </a>
       {% endif %}
       <h1><a href="/">My Blog</a></h1>
     </div>
