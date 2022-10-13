@@ -42,14 +42,14 @@ h1 {
 }
 h2 {
   font-weight: bold;
-  color: #506384;
+  color: #ffa666;
 }
 p {
   color: #4a4a4a;
 }
 
 .date {
-  color: #828282;
+  color: #58669d;
 }
 
 .save {
@@ -76,7 +76,7 @@ p {
 
 .post h2 a,
 .post h2 a:visited {
-  color: #506384;
+  color: #ffa666;
 }
 
 .post p {
