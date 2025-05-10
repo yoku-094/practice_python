@@ -7,3 +7,8 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'text',)
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'class': 'custom-textarea',  # ← ここでクラス指定
+            }),
+        }

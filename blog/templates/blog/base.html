@@ -1,7 +1,7 @@
 {% load static %}
 <html>
   <head>
-    <title>Django Girls blog</title>
+    <title>DG_MyBlog</title>
     <link
       rel="stylesheet"
       href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
@@ -18,20 +18,22 @@
   </head>
   <body>
     <div class="page-header">
-      {# 管理者ログイン済の時のみ表示 #} {% if user.is_authenticated %}
-      <!-- 記事追加アイコン -->
-      <a href="{% url 'post_new' %}" class="top-menu">
-        <span class="glyphicon glyphicon-plus"></span>
-      </a>
-      <!-- 草稿記事一覧 -->
-      <a href="{% url 'post_draft_list' %}" class="top-menu">
-        <span class="glyphicon glyphicon-edit"></span>
-      </a>
-      {% endif %}
       <h1><a href="/">My Blog</a></h1>
+      {# 管理者ログイン済の時のみ表示 #} {% if user.is_authenticated %}
+      <div class="header-menu">
+        <!-- 記事追加アイコン -->
+        <a href="{% url 'post_new' %}" class="top-menu">
+          <span class="glyphicon glyphicon-plus"></span>
+        </a>
+        <!-- 草稿記事一覧 -->
+        <a href="{% url 'post_draft_list' %}" class="top-menu">
+          <span class="glyphicon glyphicon-edit"></span>
+        </a>
+      </div>
+      {% endif %}
     </div>
     <div class="content container">
-      <div class="row">
+      <div class="row center-row">
         <div class="col-md-8">{% block content %} {% endblock %}</div>
       </div>
     </div>
