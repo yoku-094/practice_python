@@ -74,7 +74,11 @@ p {
   color: #ffffff;
   float: right;
   font-size: 26pt;
-  margin-right: 20px;
+  margin: 12px;
+}
+.sort-select {
+  float: right;
+  margin: 14px;
 }
 
 .post {

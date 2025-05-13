@@ -19,8 +19,8 @@
   <body>
     <div class="page-header">
       <h1><a href="/">My Blog</a></h1>
-      {# 管理者ログイン済の時のみ表示 #} {% if user.is_authenticated %}
       <div class="header-menu">
+        {% if user.is_authenticated %}
         <!-- 記事追加アイコン -->
         <a href="{% url 'post_new' %}" class="top-menu">
           <span class="glyphicon glyphicon-plus"></span>
@@ -29,8 +29,12 @@
         <a href="{% url 'post_draft_list' %}" class="top-menu">
           <span class="glyphicon glyphicon-edit"></span>
         </a>
+        {% endif %}
+        <!-- ソート機能 -->
+        <form method="get" class="sort-select">
+          {{ form.sort }}
+        </form>
       </div>
-      {% endif %}
     </div>
     <div class="content container">
       <div class="row center-row">

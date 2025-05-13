@@ -2,16 +2,22 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Post
 from .forms import PostForm
+from .sort_form import SortForm
 
-# ポストの一覧を表示（モデルに情報を要求し、テンプレートに渡す）
+# 投稿の一覧表示
 def post_list(request):
-    # request：インターネットを介してユーザから受け取った全ての情報が詰まったもの
-    
-    # Postモデルからブログの記事を取り出して並べ替える
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    form = SortForm(request.GET)
+    sort_values = '-created_date'
+    # ソート機能
+    if form.is_valid():
+        sort_values = form.cleaned_data.get('sort') or sort_values
 
-    # {}の中に指定した情報をテンプレートで表示（{'名前': 値（クエリセット）}）
-    return render(request, 'blog/post_list.html', {'posts': posts})
+    posts = Post.objects.order_by(sort_values)
+
+    return render(request, 'blog/post_list.html', {
+        'posts': posts,
+        'form': form
+    })
 
 # 記事詳細画面を表示
 def post_detail(request, pk):
