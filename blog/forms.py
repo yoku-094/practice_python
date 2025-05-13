@@ -9,6 +9,6 @@ class PostForm(forms.ModelForm):
         fields = ('title', 'text',)
         widgets = {
             'text': forms.Textarea(attrs={
-                'class': 'custom-textarea',  # ← ここでクラス指定
+                'class': 'custom-textarea',
             }),
         }
