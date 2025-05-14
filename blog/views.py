@@ -3,6 +3,7 @@ from django.utils import timezone
 from .models import Post
 from .forms import PostForm
 from .sort_form import SortForm
+from django.core.paginator import Paginator
 
 # 投稿の一覧表示
 def post_list(request):
@@ -13,10 +14,15 @@ def post_list(request):
         sort_values = form.cleaned_data.get('sort') or sort_values
 
     posts = Post.objects.order_by(sort_values)
+    
+    # ページネーション
+    paginator = Paginator(posts, 2)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
 
     return render(request, 'blog/post_list.html', {
-        'posts': posts,
-        'form': form
+        'page_obj': page_obj,
+        'form': form,
     })
 
 # 記事詳細画面を表示

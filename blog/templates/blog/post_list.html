@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %} {% block content %} {% for post in posts %}
+{% extends 'blog/base.html' %} {% block content %} {% for post in page_obj %}
 <div class="post">
   <div class="date">{{ post.published_date }}</div>
   <div class="submission-details">
