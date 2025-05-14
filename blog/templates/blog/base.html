@@ -42,6 +42,7 @@
       </div>
     </div>
     <!-- ページネーション -->
+    {% if show_pagination %}
     <nav class="pagination-area text-center">
       <ul class="pagination">
         {% if page_obj.has_previous %}
@@ -95,5 +96,6 @@
         {% endif %}
       </ul>
     </nav>
+    {% endif %}
   </body>
 </html>

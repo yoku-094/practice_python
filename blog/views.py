@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.utils import timezone
 from .models import Post
 from .forms import PostForm
 from .sort_form import SortForm
@@ -19,20 +18,27 @@ def post_list(request):
     paginator = Paginator(posts, 5)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
-
+    show_pagination = True
+    
     return render(request, 'blog/post_list.html', {
         'page_obj': page_obj,
         'form': form,
+        'show_pagination':show_pagination
     })
 
 # 記事詳細画面を表示
 def post_detail(request, pk):
     # 404エラーページを表示
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post': post})
+
+    return render(request, 'blog/post_detail.html', {
+        'post': post
+    })
 
 # 記事追加画面を表示
 def post_new(request):
+    show_pagination = False
+
     if request.method == "POST":
         # 空のフォームを構築
         form = PostForm(request.POST)
@@ -45,10 +51,16 @@ def post_new(request):
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm()
-    return render(request, 'blog/post_edit.html', {'form': form})
+
+    return render(request, 'blog/post_edit.html', {
+        'form': form,
+        'show_pagination':show_pagination
+    })
 
 # 記事編集画面を表示
 def post_edit(request, pk):
+    show_pagination = False
+
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
         # 構築したフォームに取得してきた内容を入れる
@@ -63,21 +75,33 @@ def post_edit(request, pk):
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
-    return render(request, 'blog/post_edit.html', {'form': form})
+
+    return render(request, 'blog/post_edit.html', {
+        'form': form,
+        'show_pagination':show_pagination
+    })
 
 #草稿一覧を表示
 def post_draft_list(request):
+    show_pagination = False
+
     posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
-    return render(request, 'blog/post_draft_list.html', {'posts': posts})
+
+    return render(request, 'blog/post_draft_list.html', {
+        'posts': posts,
+        'show_pagination':show_pagination
+    })
 
 #草稿を投稿
 def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.publish()
+
     return redirect('post_detail', pk=pk)
 
 #記事を削除
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
+
     return redirect('post_list')
