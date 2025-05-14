@@ -16,7 +16,7 @@ def post_list(request):
     posts = Post.objects.order_by(sort_values)
     
     # ページネーション
-    paginator = Paginator(posts, 2)
+    paginator = Paginator(posts, 5)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
 
