@@ -1,12 +1,13 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-
+from .category import Category
 
 # モデルの定義（ポスト内容をデータベースに保存する）
 class Post(models.Model):
     # 属性情報（プロパティ）
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
