@@ -6,7 +6,9 @@
     <p class="text">{{ post.text|linebreaksbr }}</p>
     <div class="link-col">
       {% if post.category %}
-      <div class="category"># {{ post.category }}</div>
+      <a href="{% url 'category_post_list' post.category_id %}" class="category">
+        # {{ post.category }}
+      </a>
       {% else %}
       <div class="category-none">#None</div>
       {% endif %}
@@ -19,6 +21,7 @@
 
 <style>
   .title {
+    padding: 10px;
     margin: 0px;
   }
   .submission-details {

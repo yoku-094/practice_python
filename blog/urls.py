@@ -5,6 +5,9 @@ urlpatterns = [
     # 投稿一覧
     path('', views.post_list, name='post_list'),
 
+    # カテゴリー別投稿一覧
+    path('category/<int:category_id>', views.post_list, name='category_post_list'),
+
     # 記事表示
     path('post/<int:pk>/', views.post_detail, name='post_detail'),
 

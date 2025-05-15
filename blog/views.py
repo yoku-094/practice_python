@@ -1,19 +1,26 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
+from .models import Category
 from .forms import PostForm
 from .sort_form import SortForm
 from django.core.paginator import Paginator
 
 # 投稿の一覧表示
-def post_list(request):
+def post_list(request, category_id=None):
     form = SortForm(request.GET)
     sort_values = '-created_date'
     # ソート機能
     if form.is_valid():
         sort_values = form.cleaned_data.get('sort') or sort_values
 
-    posts = Post.objects.order_by(sort_values)
-    
+    category_type = None
+    if category_id:
+        # カテゴリーで絞る場合
+        category_type = get_object_or_404(Category, pk=category_id)
+        posts = Post.objects.filter(category=category_type).order_by(sort_values)
+    else:
+        posts = Post.objects.order_by(sort_values)
+
     # ページネーション
     paginator = Paginator(posts, 5)
     page_number = request.GET.get('page', 1)
@@ -23,6 +30,7 @@ def post_list(request):
     return render(request, 'blog/post_list.html', {
         'page_obj': page_obj,
         'form': form,
+        'category_type': category_type,
         'show_pagination':show_pagination
     })
 

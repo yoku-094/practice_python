@@ -17,6 +17,13 @@
   <div class="submission-details">
     <h2 class="title">{{ post.title }}</h2>
     <p class="text">{{ post.text|linebreaksbr }}</p>
+      {% if post.category %}
+      <a href="{% url 'category_post_list' post.category_id %}" class="category">
+        # {{ post.category }}
+      </a>
+      {% else %}
+      <div class="category-none">#None</div>
+      {% endif %}
   </div>
   <div class="link-col">
     <a href="{% url 'post_list'%}" class="link">&lt;&lt; back</a>
@@ -40,7 +47,15 @@
     overflow: hidden;
     width: 100%;
     padding: 10px;
-    margin: 5px 0px;
+    margin: 25px 0px 5px;
+  }
+  .category {
+    font-size: 14px;
+    padding: 4px 10px;
+    color: #84a684;
+  }
+  .category-none {
+    visibility: hidden;
   }
   .link-col {
     margin-top: 10px;
