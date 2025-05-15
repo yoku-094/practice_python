@@ -12,7 +12,7 @@
       {% else %}
       <div class="category-none">#None</div>
       {% endif %}
-      <a href="{% url 'post_detail' pk=post.pk %}" class="link"
+      <a href="{% url 'post_detail' pk=post.pk %}?page={{ page_obj.number }}&sort={{ form.sort.value }}&category={{ category_type.id }}" class="link"
         >read more &gt;&gt;</a
       >
     </div>
