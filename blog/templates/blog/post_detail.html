@@ -1,4 +1,7 @@
-{% extends 'blog/base.html' %} {% block content %}
+{% extends 'blog/base.html' %}
+{% load markdown_filter %}
+
+{% block content %}
 <div class="post">
   {% if post.published_date %}
   <div class="date">{{ post.published_date }}</div>
@@ -16,7 +19,7 @@
   {% endif %}
   <div class="submission-details">
     <h2 class="title">{{ post.title }}</h2>
-    <p class="text">{{ post.text|linebreaksbr }}</p>
+    <p class="text">{{ post.text|markdown_to_html }}</p>
       {% if post.category %}
       <a href="{% url 'category_post_list' post.category_id %}" class="category">
         # {{ post.category }}
@@ -46,7 +49,10 @@
     border: dashed 2px #ffa666;
     padding: 10px;
   }
-  .text {
+  .submission-details p:empty {
+    display: none;
+  }
+  .submission-details p {
     min-height: 70px;
     overflow: hidden;
     width: 100%;
