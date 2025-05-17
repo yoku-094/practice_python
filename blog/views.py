@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
 from .models import Post
 from .models import Category
 from .forms import PostForm
@@ -17,9 +18,9 @@ def post_list(request, category_id=None):
     if category_id:
         # カテゴリーで絞る場合
         category_type = get_object_or_404(Category, pk=category_id)
-        posts = Post.objects.filter(category=category_type).order_by(sort_values)
+        posts = Post.objects.filter(published_date__lte=timezone.now(), category=category_type).order_by(sort_values)
     else:
-        posts = Post.objects.order_by(sort_values)
+        posts = Post.objects.filter(published_date__lte=timezone.now()).order_by(sort_values)
 
     # ページネーション
     paginator = Paginator(posts, 5)
@@ -54,7 +55,6 @@ def post_new(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            # post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:

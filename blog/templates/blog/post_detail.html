@@ -3,20 +3,32 @@
 
 {% block content %}
 <div class="post">
-  {% if post.published_date %}
-  <div class="date">{{ post.published_date }}</div>
-  {% else %}
-  <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}"
-    >Publish</a
-  >
-  {% endif %} {% if user.is_authenticated %}
-  <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"
-    ><span class="glyphicon glyphicon-pencil"></span
-  ></a>
-  <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"
-    ><span class="glyphicon glyphicon-remove"></span
-  ></a>
-  {% endif %}
+  <div class="btn-area">
+    <div class="btn-group-left">
+      {% if not post.published_date %}
+      <a class="btn btn-publish btn-primary" href="{% url 'post_publish' pk=post.pk %}"
+        >Publish</a
+      >
+      {% endif %}
+      {% if user.is_authenticated %}
+      <a class="btn btn-edit btn-success" href="{% url 'post_edit' pk=post.pk %}"
+        ><span class="glyphicon glyphicon-pencil"></span
+      ></a>
+      {% endif %}
+    </div>
+    <div class="btn-group-right">
+      {% if user.is_authenticated %}
+      <a class="btn btn-remove btn-danger" href="{% url 'post_remove' pk=post.pk %}"
+        ><span class="glyphicon glyphicon-remove"></span
+      ></a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="date-area">
+    {% if post.published_date %}
+    <div class="date">{{ post.published_date }}</div>
+    {% endif %}
+  </div>
   <div class="submission-details">
     <h2 class="title">{{ post.title }}</h2>
     <p class="text">{{ post.text|markdown_to_html }}</p>
@@ -38,6 +50,19 @@
 </div>
 
 <style>
+  .btn-area {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 16px;
+  }
+  .btn-publish {
+    margin-right: 14px;
+  }
+  .btn-edit,
+  .btn-remove {
+    height: 34px;
+  }
+
   .title {
     padding: 10px;
     margin: 0px;
