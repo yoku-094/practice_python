@@ -3,16 +3,6 @@
 
 {% block content %}
 {% for post in posts %}
-{% if not posts %}
-<div class="draft-post">
-  <img
-    src="{% static 'css/images/folder2.svg' %}"
-    class="folder-icon"
-    alt="フォルダーアイコン"
-  />
-  未投稿記事なし
-</div>
-{% endif %}
 <div class="post">
   <div class="date">{{ post.created_date }}</div>
   <div class="submission-details">
@@ -21,6 +11,16 @@
   </div>
 </div>
 {% endfor %}
+{% if not posts %}
+  <div class="draft-post">
+    <img
+      src="{% static 'css/images/folder2.svg' %}"
+      class="folder-icon"
+      alt="フォルダーアイコン"
+    />
+    未投稿記事なし
+  </div>
+{% endif %}
 <div class="link-col">
   <a href="{% url 'post_list'%}" class="link">&lt;&lt; back</a>
 </div>
