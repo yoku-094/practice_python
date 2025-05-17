@@ -1,55 +1,77 @@
 {% extends 'blog/base.html' %}
-{% load static %}
+{% load static markdown_filter %} 
 
 {% block content %}
-  {% for post in posts %}
-    <div class="post">
-      <p class="date">created: {{ post.created_date|date:'d-m-Y' }}</p>
-      <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-      <p>{{ post.text|truncatechars:200 }}</p>
-    </div>
-  {% endfor %}
-
-  {% if not posts %}
-    <div class="draft-post">
-      <img
-        src="{% static 'css/images/folder2.svg' %}"
-        class="folder-icon"
-        alt="フォルダーアイコン"
-      />
-      未投稿記事なし
-    </div>
-  {% endif %}
-  <div class="link-col">
-    <a href="{% url 'post_list'%}" class="link">&lt;&lt; back</a>
+{% for post in posts %}
+{% if not posts %}
+<div class="draft-post">
+  <img
+    src="{% static 'css/images/folder2.svg' %}"
+    class="folder-icon"
+    alt="フォルダーアイコン"
+  />
+  未投稿記事なし
+</div>
+{% endif %}
+<div class="post">
+  <div class="date">{{ post.created_date }}</div>
+  <div class="submission-details">
+    <h1 class="title"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+    <p class="text">{{ post.text|markdown_to_plain }}</p>
   </div>
+</div>
+{% endfor %}
+<div class="link-col">
+  <a href="{% url 'post_list'%}" class="link">&lt;&lt; back</a>
+</div>
 
-  <style>
-    .draft-post {
-      display: flex;
-      align-items: center;
-      margin-bottom: 50px;
-      font-size: medium;
-    }
-    .folder-icon {
-      width: 30px;
-      height: 30px;
-      margin-right: 10px;
-    }
-    .link-col {
-      margin-top: 10px;
-    }
-    .link {
-      font-size: 15px;
-      font-weight: bold;
-      color: #ffffff;
-      background-color: #ffa666;
-      padding: 2px 10px 4px;
-    }
-    .link:hover,
-    .link:visited,
-    .link:active {
-      color: #ffffff;
-    }
-  </style>
+<style>
+  .draft-post {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+    font-size: medium;
+  }
+  .folder-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+
+  .title {
+    padding: 10px;
+    margin: 0px;
+  }
+  .submission-details {
+    margin: 16px 0;
+    background: #ffffd6;
+    box-shadow: 0px 0px 0px 10px #ffffd6;
+    border: dashed 2px #ffa666;
+    padding: 10px;
+  }
+  .text {
+    max-height: 130px;
+    min-height: 70px;
+    overflow: hidden;
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0px;
+  }
+
+  .link-col {
+    margin: 10px 0px 70px;
+  }
+  .link {
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #ffa666;
+    padding: 2px 10px 4px;
+  }
+  .link:hover,
+  .link:visited,
+  .link:active {
+    color: #ffffff;
+  }
+</style>
 {% endblock %}
