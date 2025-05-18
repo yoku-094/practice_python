@@ -11,7 +11,7 @@ from django.contrib import messages
 # 公開記事一覧表示
 def post_list(request, category_id=None):
     form = SortForm(request.GET)
-    sort_values = '-created_date'
+    sort_values = '-published_date'
     # ソート機能
     if form.is_valid():
         sort_values = form.cleaned_data.get('sort') or sort_values
