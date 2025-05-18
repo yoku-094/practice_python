@@ -103,13 +103,17 @@ def post_draft_list(request):
 #草稿を投稿
 def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    post.publish()
+
+    if request.method == 'POST':
+        post.publish()
 
     return redirect('post_detail', pk=pk)
 
 #記事を削除
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    post.delete()
+
+    if request.method == 'POST':
+        post.delete()
 
     return redirect('post_list')
