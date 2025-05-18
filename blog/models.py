@@ -13,9 +13,19 @@ class Post(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
 
-    # ブログ公開用メソッド
+    # ブログ公開用
     def publish(self):
-        self.published_date = timezone.now()
+        if self.published_date == None:
+            self.published_date = timezone.now()
+        else:
+            pass
+
+        self.save()
+
+    # ブログ非公開（下書きに戻す）用
+    def unpublish(self):
+        self.published_date = None
+        self.created_date = timezone.now()
         self.save()
 
     def __str__(self):

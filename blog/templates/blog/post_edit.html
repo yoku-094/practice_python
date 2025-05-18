@@ -2,9 +2,12 @@
 
 {% block content %}
 <h2>New post</h2>
-<form method="POST" class="post-form">
+<form method="POST" action="{{ form_action_url }}" class="post-form">
   {% csrf_token %} {{ form.as_p }}
-  <button type="submit" class="save btn btn-primary">Save</button>
+  <div class="btn-area">
+    <button type="submit" name="action" value="save_draft" class="save btn btn-success">下書き保存</button>
+    <button type="submit" name="action" value="publish" class="save btn btn-primary">保存して公開</button>
+  </div>
 </form>
 
 <style>
@@ -15,5 +18,12 @@
 #id_category {
   width: 200px; 
 }
+
+.btn-area {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0px 10px;
+}
+
 </style>
 {% endblock %}

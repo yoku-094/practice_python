@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.utils import timezone
 from .models import Post
 from .models import Category
 from .forms import PostForm
 from .sort_form import SortForm
 from django.core.paginator import Paginator
+from django.contrib import messages
 
-# 投稿の一覧表示
+# 公開記事一覧表示
 def post_list(request, category_id=None):
     form = SortForm(request.GET)
     sort_values = '-created_date'
@@ -49,19 +51,34 @@ def post_new(request):
     show_pagination = False
 
     if request.method == "POST":
-        # 空のフォームを構築
+        action = request.POST.get('action')
+        if action not in ['save_draft', 'publish']:
+            messages.error(request, "無効な操作です。")
+            return redirect('post_list')
+
         form = PostForm(request.POST)
-        
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            return redirect('post_detail', pk=post.pk)
+
+            if action == 'publish':
+                post.publish() 
+                messages.success(request, "記事を公開しました。")
+                return redirect('post_list')
+            else :
+                messages.success(request, "記事を下書きとして保存しました。")
+                return redirect('post_draft_list')
+        else:
+            messages.error(request, "フォームの入力内容に誤りがあります。")
+            return redirect('post_list')
     else:
+        # 新規作成の場合は空のフォーム
         form = PostForm()
 
     return render(request, 'blog/post_edit.html', {
         'form': form,
+        'form_action_url': reverse('post_new'),
         'show_pagination':show_pagination
     })
 
@@ -71,25 +88,36 @@ def post_edit(request, pk):
 
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
-        # 構築したフォームに取得してきた内容を入れる
+        action = request.POST.get('action')
+        if action not in ['save_draft', 'publish']:
+            messages.error(request, "無効な操作です。")
+            return redirect('post_list')
+        
         form = PostForm(request.POST, instance=post)
-
-        # 草稿保存
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user
-            # post.published_date = timezone.now()
             post.save()
-            return redirect('post_detail', pk=post.pk)
+
+            if action == 'publish':
+                post.publish() 
+                messages.success(request, "記事を公開しました。")
+                return redirect('post_detail', pk=post.pk)
+            else :
+                post.unpublish() 
+                messages.success(request, "記事を下書きとして保存しました。")
+                return redirect('post_draft_list')
+        else:
+            messages.error(request, "フォームの入力内容に誤りがあります。")
     else:
         form = PostForm(instance=post)
 
     return render(request, 'blog/post_edit.html', {
         'form': form,
+        'form_action_url': reverse('post_edit', args=[pk]),
         'show_pagination':show_pagination
     })
 
-#草稿一覧を表示
+# 下書き一覧を表示
 def post_draft_list(request):
     show_pagination = False
 
@@ -100,20 +128,22 @@ def post_draft_list(request):
         'show_pagination':show_pagination
     })
 
-#草稿を投稿
+# 下書きを公開
 def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
 
     if request.method == 'POST':
         post.publish()
+        messages.success(request, "記事を公開しました。")
 
     return redirect('post_detail', pk=pk)
 
-#記事を削除
+# 記事を削除
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
 
     if request.method == 'POST':
         post.delete()
+        messages.success(request, "記事を削除しました。")
 
     return redirect('post_list')
