@@ -1,7 +1,7 @@
 # MyBlog
 
 Djangoで構築したシンプルなブログアプリです。
-Django学習用として[Django Girls]([http://127.0.0.1:8000](https://tutorial.djangogirls.org/ja/))を参考に作成したものに機能追加を施しました。
+Django学習用として[Django Girls](https://tutorial.djangogirls.org/ja/)を参考に作成したものに機能追加を施しました。
 記事の作成・編集・公開・下書き保存など、基本的な機能を備えています。
   
   
